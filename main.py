@@ -7,7 +7,10 @@ html = response.text
 
 soup = BeautifulSoup(html, 'html.parser')
 
-# Приклад: знаходження всіх елементів з тегом <a>
-links = soup.find_all('a')
+# # Приклад: знаходження всіх елементів з тегом <a>
+links = soup.find_all('a', class_='long-title')
 for link in links:
-    print(link.get('href'))
+    if link:
+        title = link.text
+        print(title)
+
