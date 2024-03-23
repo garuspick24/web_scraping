@@ -7,12 +7,18 @@ html = response.text
 
 soup = BeautifulSoup(html, 'html.parser')
 
-# # Приклад: знаходження всіх елементів з тегом <a>
-links = soup.find_all('a', class_='long-title')
-for link in links:
-    if link:
-        title = link.text
-        print(title)
+for el in soup.select(".title"):
+    title = el.select("a")
+    if title:
+        print(title[0].text)
+    else:
+        print("Немає посилань знайдених для елемента .title")
+
+city = soup.find_all('li', class_='location')
+for i in city:
+    if i:
+        title = i.text
+        print(title.strip())
 
 city = soup.find_all('li', class_='location')
 for i in city:
@@ -44,7 +50,8 @@ for i in day_date:
         title = i.text
         print(title.strip())
 
-
-
-
-
+day_date = soup.find_all('li', class_="duedate")
+for i in day_date:
+    if i:
+        title = i.text
+        print(title.strip())
