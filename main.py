@@ -34,10 +34,10 @@ soup = BeautifulSoup(html, 'html.parser')
 # parsing data from each advertisement on one page
 counter = 0
 for title_index in range(len(soup.select(".title"))):
-    all_information = []
+    all_information = [None, None, None, None, None, None]
     if soup.select(".title")[title_index].select("a"):
         title_ads = (soup.select(".title")[title_index].select("a")[0].text.strip())
-        all_information.append(title_ads)
+        all_information[0] = title_ads
 
         counter += 1
 
@@ -45,15 +45,16 @@ for title_index in range(len(soup.select(".title"))):
         if soup.select(".details")[title_index].select("li"):
             for index in range(5):
                 details = soup.select(".details")[title_index].select("li")[index].text.strip()
-                print(soup.select(".details")[title_index].select("li")[index].text.strip())
-                all_information.append(details)
-    title, city, time_, salary, company, due_date = all_information
+                if details:
+                    print(soup.select(".details")[title_index].select("li")[index].text.strip())
+                    all_information[index + 1] = details
 
-    job_ad = (title, city, time_, salary, company, due_date)
+        title, city, time_, salary, company, due_date = all_information
 
-    cursor.execute('INSERT INTO job_ads (title, city, time, salary, company, due_date) VALUES (?, ?, ?, ?, ?, ?)', job_ad)
-    conn.commit()
-    print("---------------------------------------------------")
+        job_ad = (title, city, time_, salary, company, due_date)
+        cursor.execute('INSERT INTO job_ads (title, city, time, salary, company, due_date) VALUES (?, ?, ?, ?, ?, ?)', job_ad)
+        conn.commit()
+        print("---------------------------------------------------")
 
 
 print(counter)
