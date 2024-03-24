@@ -31,19 +31,23 @@ while True:
         counter = 0
         for title_index in range(len(soup.select(".title"))):
             all_information = [None, None, None, None, None, None]
+
             if soup.select(".title")[title_index].select("a"):
+                counter += 1
                 title_ads = (soup.select(".title")[title_index].select("a")[0].text.strip())
                 all_information[0] = title_ads
-
-                counter += 1
-
                 soup.select(".title")[title_index].select("a")[0].get('href')
+                # print(title_ads)
+
                 if soup.select(".details")[title_index].select("li"):
                     for index in range(5):
-                        details = soup.select(".details")[title_index].select("li")[index].text.strip()
-                        if details:
-                            # print(soup.select(".details")[title_index].select("li")[index].text.strip())
-                            all_information[index + 1] = details
+                        try:
+                            details = soup.select(".details")[title_index].select("li")[index].text.strip()
+                            if details:
+                                # print(soup.select(".details")[title_index].select("li")[index].text.strip())
+                                all_information[index + 1] = details
+                        except Exception as e:
+                            print(f"Error: {e}")
 
                 title, city, time_, salary, company, due_date = all_information
 
@@ -52,9 +56,13 @@ while True:
                     'INSERT INTO job_ads (title, city, time, salary, company, due_date) VALUES (?, ?, ?, ?, ?, ?)',
                     job_ad)
                 conn.commit()
+
+
                 # print("---------------------------------------------------")
 
-    page += 1
+        page += 1
+    else:
+        break
 
 # Закриття підключення
 conn.close()
