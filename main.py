@@ -1,5 +1,30 @@
+import sqlite3
 import requests
 from bs4 import BeautifulSoup
+
+
+conn = sqlite3.connect('database.db')
+cursor = conn.cursor()
+
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS job_ads (
+        id INTEGER PRIMARY KEY,
+        title TEXT,
+        city TEXT,
+        time TEXT,
+        salary TEXT,
+        company TEXT,
+        due_date TEXT
+    )
+''')
+conn.commit()
+
+
+
+# Закриття підключення
+conn.close()
+
+
 
 url = 'https://www.visidarbi.lv/darba-sludinajumi?page=1#results'
 response = requests.get(url)
@@ -12,7 +37,7 @@ counter = 0
 for title_index in range(len(soup.select(".title"))):
 
     if soup.select(".title")[title_index].select("a"):
-        print(soup.select(".title")[title_index].select("a")[0].text.strip())
+        title_ads = (soup.select(".title")[title_index].select("a")[0].text.strip())
 
         counter += 1
 
@@ -20,6 +45,11 @@ for title_index in range(len(soup.select(".title"))):
         if soup.select(".details")[title_index].select("li"):
             for index in range(5):
                 print(soup.select(".details")[title_index].select("li")[index].text.strip())
+
+    job_ad = (title_ads, '/darba-sludinajums/brugetaji-demontazas-darbinieki/65043e6ae08c1')
+
+    cursor.execute('INSERT INTO job_ads (title, link) VALUES (?, ?)', job_ad)
+    conn.commit()
     print("---------------------------------------------------")
 
 
