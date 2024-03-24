@@ -7,51 +7,19 @@ html = response.text
 
 soup = BeautifulSoup(html, 'html.parser')
 
-for el in soup.select(".title"):
-    title = el.select("a")
-    if title:
-        print(title[0].text)
-    else:
-        print("Немає посилань знайдених для елемента .title")
+# parsing data from each advertisement on one page
+counter = 0
+for title_index in range(len(soup.select(".title"))):
 
-city = soup.find_all('li', class_='location')
-for i in city:
-    if i:
-        title = i.text
-        print(title.strip())
+    if soup.select(".title")[title_index].select("a"):
+        print(soup.select(".title")[title_index].select("a")[0].text.strip())
 
-city = soup.find_all('li', class_='location')
-for i in city:
-    if i:
-        title = i.text
-        print(title.strip())
+        counter += 1
 
-pirms = soup.find_all('li', class_='added')
-for i in pirms:
-    if i:
-        title = i.text
-        print(title.strip())
+        soup.select(".title")[title_index].select("a")[0].get('href')
+        if soup.select(".details")[title_index].select("li"):
+            for index in range(5):
+                print(soup.select(".details")[title_index].select("li")[index].text.strip())
+    print("---------------------------------------------------")
 
-salary = soup.find_all('li', class_="salary")
-for i in salary:
-    if i:
-        title = i.text
-        print(title.strip())
-
-company = soup.find_all('li', class_="company")
-for i in company:
-    if i:
-        title = i.text
-        print(title.strip())
-
-day_date = soup.find_all('li', class_="duedate")
-for i in day_date:
-    if i:
-        title = i.text
-        print(title.strip())
-
-day_date = soup.find_all('li', class_="duedate")
-for i in day_date:
-    if i:
-        title = i.text
-        print(title.strip())
+print(counter)
