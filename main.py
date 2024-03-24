@@ -22,4 +22,5 @@ for title_index in range(len(soup.select(".title"))):
                 print(soup.select(".details")[title_index].select("li")[index].text.strip())
     print("---------------------------------------------------")
 
+
 print(counter)
