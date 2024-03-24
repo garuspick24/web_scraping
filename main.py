@@ -21,8 +21,7 @@ conn.commit()
 
 
 
-# Закриття підключення
-conn.close()
+
 
 
 
@@ -52,9 +51,12 @@ for title_index in range(len(soup.select(".title"))):
 
     job_ad = (title, city, time_, salary, company, due_date)
 
-    cursor.execute('INSERT INTO job_ads (title, link) VALUES (?, ?)', job_ad)
+    cursor.execute('INSERT INTO job_ads (title, city, time, salary, company, due_date) VALUES (?, ?, ?, ?, ?, ?)', job_ad)
     conn.commit()
     print("---------------------------------------------------")
 
 
 print(counter)
+
+# Закриття підключення
+conn.close()
