@@ -62,7 +62,8 @@ while True:
 
         page += 1
     else:
+        print("All data downloaded")
         break
 
-# Закриття підключення
+# Closing the connection
 conn.close()
